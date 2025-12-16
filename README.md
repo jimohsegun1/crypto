@@ -2,9 +2,11 @@
 
 This project is a modern web application for handling cryptocurrency-to-fiat transactions, built with a focus on a clean user interface and a robust, modern tech stack.
 
+- **Figma Link**: [Next.js](https://www.figma.com/design/FRfbMHys4JINX4V9qBxgbf/Frontend-Assessment?node-id=0-1&p=f&t=IJxMTJOz150ZH7xx-0) Design figma link Router
+
 ## Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/) (v15) with App Router
+- **Framework**: [Next.js](https://nextjs.org/) (v15) upward with App Router
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **UI Library**: [React](https://reactjs.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
