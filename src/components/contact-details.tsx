@@ -5,6 +5,8 @@ import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import Image from 'next/image';
+import { useToast } from '@/hooks/use-toast';
+
 
 interface ContactDetailsProps {
     onBack: () => void;
@@ -15,8 +17,38 @@ export function ContactDetails({ onBack, onNext }: ContactDetailsProps) {
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [countryCode, setCountryCode] = useState('+234');
+    const { toast } = useToast();
+
 
     const isFormComplete = email && phone;
+
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const handleEmailBlur = () => {
+        if (email && !validateEmail(email)) {
+            toast({
+                title: 'Invalid Email',
+                description: 'Please enter a valid email address.',
+                variant: 'destructive',
+            });
+        }
+    };
+
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) {
+            setPhone(value);
+        } else {
+            toast({
+                title: 'Invalid Input',
+                description: 'Phone number must contain only numbers.',
+                variant: 'destructive',
+            });
+        }
+    };
 
     return (
         <div className="w-full max-w-md">
@@ -36,6 +68,7 @@ export function ContactDetails({ onBack, onNext }: ContactDetailsProps) {
                         className="mt-1 h-12 rounded-full bg-white px-4"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        onBlur={handleEmailBlur}
                     />
                 </div>
                 <div>
@@ -55,7 +88,8 @@ export function ContactDetails({ onBack, onNext }: ContactDetailsProps) {
                             placeholder="000 - 000 - 00000"
                             className="h-12 flex-1 rounded-full bg-white px-4"
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={handlePhoneChange}
+                            inputMode="numeric"
                         />
                     </div>
                 </div>
@@ -63,7 +97,7 @@ export function ContactDetails({ onBack, onNext }: ContactDetailsProps) {
 
             <Button 
                 className="mt-8 h-12 w-full rounded-full bg-primary text-lg font-semibold text-primary-foreground"
-                disabled={!isFormComplete}
+                disabled={!isFormComplete || !validateEmail(email)}
                 onClick={onNext}
             >
                 Next

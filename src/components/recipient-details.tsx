@@ -5,6 +5,7 @@ import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import Image from 'next/image';
+import { useToast } from '@/hooks/use-toast';
 
 interface RecipientDetailsProps {
     onBack: () => void;
@@ -14,6 +15,21 @@ interface RecipientDetailsProps {
 
 export function RecipientDetails({ onBack, onNext, selectedBank }: RecipientDetailsProps) {
     const [accountNumber, setAccountNumber] = useState('');
+    const { toast } = useToast();
+
+    const handleAccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) {
+            setAccountNumber(value);
+        } else {
+            toast({
+                title: 'Invalid Input',
+                description: 'Account number must contain only numbers.',
+                variant: 'destructive',
+            });
+        }
+    };
+
 
     return (
         <div className="w-full max-w-md">
@@ -46,7 +62,9 @@ export function RecipientDetails({ onBack, onNext, selectedBank }: RecipientDeta
                         placeholder="Enter your account number"
                         className="mt-1 h-12 rounded-full bg-white px-4"
                         value={accountNumber}
-                        onChange={(e) => setAccountNumber(e.target.value)}
+                        onChange={handleAccountNumberChange}
+                        pattern="[0-9]*"
+                        inputMode="numeric"
                     />
                 </div>
                 <div>
